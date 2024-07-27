@@ -183,17 +183,21 @@ exports.evaluateRule = async (req, res) => {
 
         // Function to evaluate conditions
         const evaluateCondition = (condition, data) => {
+            console.log("entered evalute");
             const { attribute, operator, value } = condition;
             const dataValue = data[attribute];
-
+            console.log(data[attribute]);
             // Convert dataValue and value to the same type for comparison
-            if (typeof dataValue === 'string' && typeof value === 'string') {
+            if ((typeof dataValue === 'string') && (typeof value === 'string')) {
+                console.log("datatypes in if condition");
                 switch (operator) {
                     case '==': return dataValue === value;
                     case '!=': return dataValue !== value;
                     default: return false;
                 }
-            } else if (typeof dataValue === 'string' && typeof value === 'number') {
+                
+            } else if ((typeof dataValue == 'string') && (typeof value == 'number')) {
+                console.log("datatypes in else if condition");
                 switch (operator) {
                     case '>': return dataValue > value;
                     case '<': return dataValue < value;
@@ -203,13 +207,15 @@ exports.evaluateRule = async (req, res) => {
                     case '!=': return dataValue !== value;
                     default: return false;
                 }
-            } else if (typeof dataValue === 'string' && typeof value === 'boolean') {
+            } else if ((typeof dataValue === 'string') && (typeof value === 'boolean')) {
+                console.log("datatypes in boolean condition");
                 switch (operator) {
                     case '==': return dataValue === value;
                     case '!=': return dataValue !== value;
                     default: return false;
                 }
-            } else if (dataValue instanceof Date && value instanceof Date) {
+            } else if ((dataValue instanceof Date) && (value instanceof Date)) {
+                console.log("datatypes in date condition");
                 switch (operator) {
                     case '==': return dataValue.getTime() === value.getTime();
                     case '!=': return dataValue.getTime() !== value.getTime();
@@ -226,6 +232,7 @@ exports.evaluateRule = async (req, res) => {
             console.log('Evaluating node:', node);
             
             if (node.type === 'operand') {
+                
                 const result = evaluateCondition(node.value, data);
                 console.log('Operand result:', result);
                 return result;
